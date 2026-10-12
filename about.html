@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}About — FaceScope AI{% endblock %}
+{% block content %}
+<section class="page-heading"><div class="eyebrow">PROJECT NOTES</div><h1>How FaceScope <span>works</span></h1><p class="hero-copy">A small educational web app demonstrating a classic computer-vision pipeline.</p></section>
+<div class="steps-grid">
+  <article class="card step"><span class="step-num">01</span><h2>Detect</h2><p>OpenCV Haar Cascade locates likely face regions in the uploaded image.</p></article>
+  <article class="card step"><span class="step-num">02</span><h2>Preprocess</h2><p>The selected face crop is converted to grayscale and resized to 160 × 160 pixels.</p></article>
+  <article class="card step"><span class="step-num">03</span><h2>Recognize</h2><p>LBPH compares the crop against enrolled training examples. A distance threshold determines whether to show a known label or Unknown.</p></article>
+  <article class="card step"><span class="step-num">04</span><h2>Evaluate</h2><p>Run the evaluation script on separate test images to report measured accuracy and classification metrics.</p></article>
+</div>
+<div class="card ethics-card"><h2>Limitations &amp; responsible use</h2><p>This demo is not suitable for security or consequential decisions. Lighting, pose, occlusion, image quality, and dataset size can affect results. The LBPH distance is not a calibrated confidence probability. Obtain informed consent before collecting or processing anyone's face images, and do not publish private images or model files.</p></div>
+{% endblock %}

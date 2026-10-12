@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+models/*.yml
+models/labels.txt
+static/uploads/*
+!static/uploads/.gitkeep
+dataset/*
+!dataset/.gitkeep
+dataset_test/*
+!dataset_test/.gitkeep
+.env

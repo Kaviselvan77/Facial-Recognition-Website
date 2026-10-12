@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Analysis Results — FaceScope AI{% endblock %}
+{% block content %}
+<section class="page-heading"><div class="eyebrow">ANALYSIS COMPLETE</div><h1>Image <span>results</span></h1><p class="hero-copy">The green boxes show faces detected by OpenCV.</p></section>
+<section class="results-grid">
+  <div class="card result-image-card"><div class="section-kicker">ANNOTATED IMAGE</div><img class="result-image" src="{{ image_url }}" alt="Image annotated with detected face boxes"><p class="tiny-note">Output image saved locally in the static/uploads folder.</p></div>
+  <div class="card">
+    <div class="section-kicker">RECOGNITION SUMMARY</div><h2>{{ results|length }} face{{ '' if results|length == 1 else 's' }} detected</h2>
+    {% if not results %}<div class="empty-state"><span>⌕</span><strong>No faces detected</strong><p>Try a clear, front-facing image with better lighting.</p></div>{% else %}
+      {% for item in results %}
+      <div class="identity-card"><div class="avatar">{{ loop.index }}</div><div class="identity-main"><span class="muted small">FACE {{ '%02d'|format(loop.index) }}</span><strong>{{ item.identity }}</strong><span class="muted small">{{ 'LBPH distance: ' ~ item.distance if item.distance is not none else 'Detection only — train a model to identify people' }}</span></div><span class="badge {{ 'known' if item.identity != 'Unknown' else 'unknown' }}">{{ 'MATCH' if item.identity != 'Unknown' else 'UNKNOWN' }}</span></div>
+      {% endfor %}
+    {% endif %}
+    {% if not model_ready %}<div class="tip-box"><strong>Recognition model missing</strong><p>Run <code>python train_model.py</code> after adding training images.</p></div>{% endif %}
+    <a class="button primary full" href="{{ url_for('index') }}">Analyze another image ↗</a>
+  </div>
+</section>
+{% endblock %}

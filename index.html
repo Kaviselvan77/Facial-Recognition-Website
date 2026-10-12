@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}FaceScope AI — Workspace{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="eyebrow"><span class="pulse"></span> COMPUTER VISION LAB</div>
+  <h1>See the face.<br><span>Understand the image.</span></h1>
+  <p class="hero-copy">Upload an image to detect faces and, after training, compare them with your consent-based sample dataset.</p>
+  <div class="hero-tags"><span>OpenCV</span><span>LBPH Recognition</span><span>Flask</span></div>
+</section>
+
+<section class="workspace-grid">
+  <div class="card upload-card">
+    <div class="section-kicker">01 / IMAGE INPUT</div>
+    <h2>Analyze an image</h2>
+    <p class="muted">Choose a clear JPG, PNG, or BMP image with one or more visible faces.</p>
+    <form action="{{ url_for('recognize') }}" method="post" enctype="multipart/form-data" id="upload-form">
+      <label class="dropzone" for="image-input">
+        <span class="upload-symbol">↑</span>
+        <strong id="file-label">Choose an image to upload</strong>
+        <span class="muted small">Click to browse · Max 8 MB</span>
+        <input type="file" id="image-input" name="image" accept=".jpg,.jpeg,.png,.bmp,image/*" required>
+      </label>
+      <div id="preview-wrap" class="preview-wrap hidden"><img id="preview" alt="Selected image preview"></div>
+      <button class="button primary full" type="submit">Detect &amp; recognize <span>→</span></button>
+    </form>
+    <p class="tiny-note">Images are processed by this local Flask app. Uploads are saved in <code>static/uploads/</code> until you remove them.</p>
+  </div>
+
+  <div class="card status-card">
+    <div class="section-kicker">02 / MODEL STATUS</div>
+    <h2>Your recognition lab</h2>
+    <div class="status-row"><span class="status-dot {{ 'green' if model_ready else 'amber' }}"></span><div><strong>{{ 'Model ready' if model_ready else 'Model not trained yet' }}</strong><p>{{ 'The saved LBPH model is available.' if model_ready else 'Face detection works now; identity matching needs training.' }}</p></div></div>
+    <div class="divider"></div>
+    <div class="stat-grid">
+      <div class="stat"><span class="stat-value">{{ people|length }}</span><span class="stat-label">Dataset folders</span></div>
+      <div class="stat"><span class="stat-value">160×160</span><span class="stat-label">Face crop size</span></div>
+      <div class="stat"><span class="stat-value">LBPH</span><span class="stat-label">Recognition method</span></div>
+      <div class="stat"><span class="stat-value">Local</span><span class="stat-label">Runtime</span></div>
+    </div>
+    <div class="tip-box"><strong>First time here?</strong><ol><li>Add images to <code>dataset/Person_1/</code> and <code>dataset/Person_2/</code>.</li><li>Run <code>python train_model.py</code>.</li><li>Refresh this page and upload a test image.</li></ol></div>
+    {% if people %}<p class="muted small">Dataset folders found: {{ people|join(', ') }}</p>{% endif %}
+  </div>
+</section>
+<section class="bottom-banner"><div><span class="section-kicker">BUILT FOR LEARNING</span><h3>Detect first. Evaluate honestly.</h3><p>Use held-out images to measure real performance. LBPH distance is not a confidence percentage.</p></div><a class="button secondary" href="{{ url_for('about') }}">How it works ↗</a></section>
+{% endblock %}
